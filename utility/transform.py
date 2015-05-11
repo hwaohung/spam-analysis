@@ -11,3 +11,5 @@ def transform(obj):
     vector.append(obj["Content"].count("http://"))
     # Whether has geography information
     vector.append(obj["geoip"]["longitude"])
+
+    return vector
