@@ -11,7 +11,7 @@ def transform(obj):
     # Time of deliver(a day)
     vector.append(get_time(obj))
     # "http://" in the content
-    vector.append(obj["Content"].count("http://"))
+    vector.append(get_link(obj))
     # Whether has geography information
     vector.append(get_longitude(obj))
 
@@ -37,13 +37,17 @@ def get_time(obj):
     if obj.has_key("Date"):
         flags = obj["Date"].split(' ')
         hour, minute = flags[3].split(':')[:2]
-        return 60*int(hour) + int(minute)
+        return (60*int(hour) + int(minute))
 
-    else: return -1000
+    else: return 1200
+
+
+def get_link(obj):
+    return obj["Content"].count("http://")
 
 
 def get_longitude(obj):
     if obj.has_key("geoip"):
         return obj["geoip"]["longitude"]
 
-    else: return -100000.0
+    else: return 0.0
