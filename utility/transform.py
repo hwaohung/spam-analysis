@@ -1,15 +1,49 @@
+import re
+
+
 def transform(obj):
     vector = list()
 
     # Count the special symbol in subject
-    vector.append(len(re.findall("[^a-zA-z0-9]", obj["Subject"])))
+    vector.append(get_subject(obj))
     # Mail To amount
-    vector.append(len(obj["To"]))
+    vector.append(get_to(obj))
     # Time of deliver(a day)
-    vector.append(obj["Date"].hour*60+obj["Date"].minute)
+    vector.append(get_time(obj))
     # "http://" in the content
     vector.append(obj["Content"].count("http://"))
     # Whether has geography information
-    vector.append(obj["geoip"]["longitude"])
+    vector.append(get_longitude(obj))
 
+    #print vector
     return vector
+
+
+def get_subject(obj):
+    if obj.has_key("Subject"):
+        return len(re.findall("[^a-zA-z0-9]", obj["Subject"]))
+
+    else: return 0
+
+
+def get_to(obj):
+    if obj.has_key("To"):
+        return len(obj["To"])
+
+    else: return 1
+
+
+def get_time(obj):
+    if obj.has_key("Date"):
+        flags = obj["Date"].split(' ')
+        hour, minute = flags[3].split(':')[:2]
+        return 60*int(hour) + int(minute)
+
+    else: return -1000
+
+
+def get_longitude(obj):
+    if obj.has_key("geoip"):
+        return obj["geoip"]["longitude"]
+
+    else: return -100000.0
