@@ -13,12 +13,15 @@ def main():
     csv_writer = csv.writer(fp, delimiter=',')
 
     cost = time.time()
+    rows = list()
     for index in get_all_indexes():
         for row in get_all_rows(index, doc_type):
             #print json.dumps(row, indent=1)
             #print "============================================="
             #print "============================================="
-            csv_writer.writerow(transform(row))
+            rows.append(transform(row))
+    
+    csv_writer.writerows(rows)
 
     print "Attribute matrix complete!"
     print "Cost: {0}".format(time.time()-cost)
