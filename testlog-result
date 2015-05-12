@@ -1,8 +1,14 @@
 {
-          "@timestamp" => "2010-01-16T10:31:47.000Z",
+          "@timestamp" => "2015-05-12T09:26:54.493Z",
         "Delivered-to" => "bruce@untroubled.org",
     "X-Originating-IP" => "168.143.83.158",
-                "Date" => "16 Jan 2010 10:31:47 +0000",
+                "Date" => "16 Jan 2010 10:31:52 -0000",
+                  "CC" => [
+        [0] "ehbruce@bruce-guenter.dyndns.org",
+        [1] "lists-bikini@bruce-guenter.dyndns.org",
+        [2] "lists-bikinia@bruce-guenter.dyndns.org",
+        [3] "lists-svn-users@bruce-guenter.dyndns.org"
+    ],
              "Subject" => "=?UTF-8?Q?RS Outlet certified language software for Mac/PC at 90?=\n          =?UTF-8?Q? =25 off for bruce=21?=",
                 "From" => "no-reply@mobilegetbuy.com",
                   "To" => [
@@ -11,13 +17,27 @@
         [2] "lists-bikinia@bruce-guenter.dyndns.org",
         [3] "lists-svn-users@bruce-guenter.dyndns.org"
     ],
-                  "CC" => [
-        [0] "ehbruce@bruce-guenter.dyndns.org",
-        [1] "lists-bikini@bruce-guenter.dyndns.org",
-        [2] "lists-bikinia@bruce-guenter.dyndns.org",
-        [3] "lists-svn-users@bruce-guenter.dyndns.org"
-    ],
         "Content-Type" => "multipart/alternative;\n\tboundary=\"---=_NextPart_923F_OOXB_B2ZN4\"",
-             "Content" => "stree t  revis ed  chuff ing  screw up  lamen ts  dayli ghts  visce\nrally  outsk irts  consu medly  lysog enici ty  rains torm  decry pts\n extra neous ly  gandy  grunt er  neura sthen ic  labou rings  affor\nds  theat rical  brass  persi sted  insid e  glist er  overc rop\nsubli mable  varia blene ss  indiu m  cells  behav ed  rippl er\nequiv ocate  kingm aker  seren ise  reoxi dises  tremo rs  casca des\nmonos ynapt ic  orpha nizes  boule vardi ze  chest nut  estie nne\nmulti value d  hauls  miste rs  unfav orite  backg ammon  count ersha\nde  barke r  mindf ully  shell proof  tuebo r  barke r  reluc tant\nsixfo ld  pyrit ize  plati es  multi value d  phyle tic  retou ch\nhosin g  flami nius  robin  preve ntabl y\n"
+             "Content" => "stree t  revis ed  chuff ing  screw up  lamen ts  dayli ghts  visce\nrally  outsk irts  consu medly  lysog enici ty  rains torm  decry pts\n extra neous ly  gandy  grunt er  neura sthen ic  labou rings  affor\nds  theat rical  brass  persi sted  insid e  glist er  overc rop\nsubli mable  varia blene ss  indiu m  cells  behav ed  rippl er\nequiv ocate  kingm aker  seren ise  reoxi dises  tremo rs  casca des\nmonos ynapt ic  orpha nizes  boule vardi ze  chest nut  estie nne\nmulti value d  hauls  miste rs  unfav orite  backg ammon  count ersha\nde  barke r  mindf ully  shell proof  tuebo r  barke r  reluc tant\nsixfo ld  pyrit ize  plati es  multi value d  phyle tic  retou ch\nhosin g  flami nius  robin  preve ntabl y\n",
+           "@sendTime" => "2010-01-16T10:31:52.000Z",
+               "geoip" => {
+                      "ip" => "168.143.83.158",
+           "country_code2" => "US",
+           "country_code3" => "USA",
+            "country_name" => "United States",
+          "continent_code" => "NA",
+             "region_name" => "CO",
+               "city_name" => "Englewood",
+             "postal_code" => "80111",
+                "latitude" => 39.623700000000014,
+               "longitude" => -104.8738,
+                "dma_code" => 751,
+               "area_code" => 303,
+                "timezone" => "America/Denver",
+        "real_region_name" => "Colorado",
+                "location" => [
+            [0] -104.8738,
+            [1] 39.623700000000014
+        ]
+    }
 }
-
