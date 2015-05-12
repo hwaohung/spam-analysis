@@ -17,12 +17,18 @@ def get_all_indexes():
         yield info.split(' ')[4]
 
 
-def get_all_rows(index, doc_type):
-    #result = es.search(index="test", doc_type="articles", body={"query": {"match": {"content": "fox"}}})
-    #print("%d documents found" % result['hits']['total'])
-    #print("%s) %s" % (doc['_id'], doc['_source']['content']))
-    result = es.search(index=index, doc_type=doc_type, body={"query": {"match_all":{}}})
-    return [doc["_source"] for doc in result['hits']['hits']]
+def get_all_rows(index, doc_type, offset=0, limit=500):
+    info = { "query": { "match_all": {} } }
+    while True: 
+        info["from"] = offset
+        info["size"] = limit
+
+        result = es.search(index=index, doc_type=doc_type, body=info)
+        rows = [doc["_source"] for doc in result['hits']['hits']]
+        if len(rows) == 0: break
+
+        yield rows
+        offset += limit
 
 
 if __name__ == "__main__":
