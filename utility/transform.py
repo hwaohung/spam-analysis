@@ -1,7 +1,7 @@
 import re, copy
 
 
-class Collection:
+class Transformer:
     def __init__(self):
         self.rows = list()
         self.max_values = [0, 0, 0, 0, 0]
