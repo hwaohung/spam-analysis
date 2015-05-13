@@ -1,42 +1,47 @@
-import re, copy
+import re, copy, csv, os, io
 
 
 class Transformer:
-    def __init__(self):
-        self.rows = list()
+    def __init__(self, name="temp"):
+        self.name = name
+        self.fp = io.open(name+".temp", 'w', buffering=4096)
+        #self.csv_writer = csv.writer(self.fp, delimiter=',')
+
+        self.row_count = 0
         self.max_values = [0, 0, 0, 0, 0]
         self.fail_times = [0, 0, 0, 0, 0]
 
     def report(self):
-        print "Total rows: {0}\n".format(len(self.rows))
+        print "Total rows: {0}\n".format(self.row_count)
         
         print "Attribute convert fail times"
         print "============================"
         attributes = ["Subject", "To", "Time", "Link", "Longtitude"]
-        for i in range(len(attributes))
+        for i in range(len(attributes)):
             print "{0}: {1}".format(attributes[i], self.fail_times[i])
 
         print "============================"
-        
+ 
     # Add more than one obj at once 
     def extend(self, objs):
+        print "Current rows: {0}".format(self.row_count)
         for obj in objs:
             self.add(obj)
-
+        
     # Convert the obj to attribute vector and add to self.rows
     def add(self, obj):
         vector = list()
     
         # Count the special symbol in subject
-        vector.append(get_subject(obj))
+        vector.append(self.get_subject(obj))
         # Mail To amount
-        vector.append(get_to(obj))
+        vector.append(self.get_to(obj))
         # Time of deliver(a day)
-        vector.append(get_time(obj))
+        vector.append(self.get_time(obj))
         # "http://" in the content
-        vector.append(get_link(obj))
+        vector.append(self.get_link(obj))
         # Whether has geography information
-        vector.append(get_longitude(obj))
+        vector.append(self.get_longitude(obj))
     
         #print vector
 
@@ -44,24 +49,52 @@ class Transformer:
         for i in range(len(vector)):
             if vector[i] > self.max_values[i]:
                 self.max_values[i] = vector[i]
-        
-        self.rows.append(vector)
+
+        self.row_count += 1
+        vector = [str(e) for e in vector]
+        #self.csv_writer.writerow(vector)
+        self.fp.write(unicode(",".join(vector)+'\n'))
 
     # Normal each axis value to same scale
     def normalize(self):
-        for row in self.rows:
-            for i in range(len(row)):
-                row[i] /= self.max_values[i]
-   
-    # Get all attribute vectors, and also can re-weight some attributes(optional)
-    def get_all_rows(self, weights=None):
-        rows = copy.deepcopy(self.rows)
-        if weights is not None:
-            for row in rows:
-                for i in range(len(weights)):
-                    row[i] *= weights[i]
+        # Close the writer
+        self.fp.close()
+        old_name = self.fp.name
+        csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=',')
 
-        return rows
+        # Normalize result writer
+        self.fp = io.open(old_name+"_n", 'w')
+        #self.csv_writer = csv.writer(self.fp, delimiter=',')
+
+        for row in csv_reader:
+            for i in range(len(row)):
+                row[i] = str(float(row[i]) / self.max_values[i])
+
+            #self.csv_writer.writerow(row)
+            self.fp.write(unicode(",".join(row)+'\n'))
+        os.system("rm {0}".format(old_name))
+   
+    # Write all attribute vectors, and also can re-weight some attributes(optional)
+    def write_all_rows(self, weights=None):
+        self.fp.close()
+        old_name = self.fp.name
+        csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=',')
+
+        # Final result writer
+        self.fp = io.open(self.name+".csv", 'w')
+        #self.csv_writer = csv.writer(self.fp, delimiter=',')
+
+        if weights is not None:
+            for row in csv_reader:
+                for i in range(len(weights)):
+                    row[i] = str(float(row[i]) * weights[i])
+
+            #self.csv_writer.writerow(row)
+            self.fp.write(unicode(",".join(row)+'\n'))
+        os.system("rm {0}".format(old_name))
+
+    def close(self):
+        self.fp.close()
 
     def get_subject(self, obj):
         if obj.has_key("Subject"):
@@ -91,7 +124,7 @@ class Transformer:
     
     
     def get_link(self, obj):
-        if obj.has_key("Content")
+        if obj.has_key("Content"):
             return obj["Content"].count("http://")
     
         else:
