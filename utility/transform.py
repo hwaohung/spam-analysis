@@ -5,7 +5,11 @@ class Transformer:
     def __init__(self):
         self.rows = list()
         self.max_values = [0, 0, 0, 0, 0]
-        
+    
+
+    def extend(self, objs):
+        for obj in objs:
+            self.add(obj)
 
     # Convert the obj to attribute vector and add to self.rows
     def add(self, obj):
@@ -72,7 +76,10 @@ def get_time(obj):
 
 
 def get_link(obj):
-    return obj["Content"].count("http://")
+    if obj.has_key("Content")
+        return obj["Content"].count("http://")
+
+    else: return 0
 
 
 def get_longitude(obj):

@@ -15,12 +15,14 @@ def main():
     cost = time.time()
     transformer = Transformer()
     for index in get_all_indexes():
-        for row in get_all_rows(index, doc_type):
+        for rows in get_all_rows(index, doc_type):
+            transformer.extend(rows)
             #print json.dumps(row, indent=1)
             #print "============================================="
             #print "============================================="
-            transformer.add(row)
-    
+            
+
+    transformer.normalize()
     csv_writer.writerows(transformer.get_all_rows())
 
     print "Attribute matrix complete!"

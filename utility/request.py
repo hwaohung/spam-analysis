@@ -33,5 +33,8 @@ def get_all_rows(index, doc_type, offset=0, limit=500):
 
 if __name__ == "__main__":
     for index in get_all_indexes():
-        rows = get_all_rows(index=index, doc_type="logs")
-        print rows[0]
+        for rows in get_all_rows(index=index, doc_type="logs", offset=0, limit=1):
+            print rows[0]
+            print "========================================"
+            print "========================================"
+            raw_input("...")
