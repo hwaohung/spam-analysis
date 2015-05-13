@@ -25,8 +25,9 @@ def main():
     transformer.normalize()
     csv_writer.writerows(transformer.get_all_rows())
 
-    print "Attribute matrix complete!"
+    print "Attribute convert complete!"
     print "Cost: {0}".format(time.time()-cost)
+    transformer.report()
 
     fp.close()
     

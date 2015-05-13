@@ -5,8 +5,20 @@ class Transformer:
     def __init__(self):
         self.rows = list()
         self.max_values = [0, 0, 0, 0, 0]
-    
+        self.fail_times = [0, 0, 0, 0, 0]
 
+    def report(self):
+        print "Total rows: {0}\n".format(len(self.rows))
+        
+        print "Attribute convert fail times"
+        print "============================"
+        attributes = ["Subject", "To", "Time", "Link", "Longtitude"]
+        for i in range(len(attributes))
+            print "{0}: {1}".format(attributes[i], self.fail_times[i])
+
+        print "============================"
+        
+    # Add more than one obj at once 
     def extend(self, objs):
         for obj in objs:
             self.add(obj)
@@ -51,40 +63,46 @@ class Transformer:
 
         return rows
 
-
-def get_subject(obj):
-    if obj.has_key("Subject"):
-        return len(re.findall("[^a-zA-z0-9]", obj["Subject"]))
-
-    else: return 0
-
-
-def get_to(obj):
-    if obj.has_key("To"):
-        return len(obj["To"])
-
-    else: return 1
-
-
-def get_time(obj):
-    if obj.has_key("Date"):
-        flags = obj["Date"].split(' ')
-        hour, minute = flags[3].split(':')[:2]
-        return (60*int(hour) + int(minute))
-
-    else: return 1200
-
-
-def get_link(obj):
-    if obj.has_key("Content")
-        return obj["Content"].count("http://")
-
-    else: return 0
-
-
-def get_longitude(obj):
-    if obj.has_key("geoip"):
-        # Range 360 ~ 0
-        return obj["geoip"]["longitude"] + 180.0
-
-    else: return 180.0
+    def get_subject(self, obj):
+        if obj.has_key("Subject"):
+            return len(re.findall("[^a-zA-z0-9]", obj["Subject"]))
+    
+        else:
+            self.fail_times[0] += 1
+            return 0
+    
+    def get_to(self, obj):
+        if obj.has_key("To"):
+            return len(obj["To"])
+    
+        else:
+            self.fail_times[1] += 1
+            return 1
+    
+    def get_time(self, obj):
+        if obj.has_key("Date"):
+            flags = obj["Date"].split(' ')
+            hour, minute = flags[3].split(':')[:2]
+            return (60*int(hour) + int(minute))
+    
+        else:
+            self.fail_times[2] += 1
+            return 1200
+    
+    
+    def get_link(self, obj):
+        if obj.has_key("Content")
+            return obj["Content"].count("http://")
+    
+        else:
+            self.fail_times[3] += 1
+            return 0
+    
+    def get_longitude(self, obj):
+        if obj.has_key("geoip"):
+            # Range 360 ~ 0
+            return obj["geoip"]["longitude"] + 180.0
+    
+        else: 
+            self.fail_times[4] += 1
+            return 180.0
