@@ -110,12 +110,22 @@ class Transformer:
             return 0
     
     def get_to(self, obj):
+        times = 0
+        to = 0
+
         if obj.has_key("To"):
-            return len(obj["To"])
+            times += 1
+            to += len(obj["To"])
+        if obj.has_key("CC"):
+            times += 1
+            to += len(obj["CC"])
+        if obj.has_key("BCC"):
+            times += 1
+            to += len(obj["BCC"])
     
-        else:
-            self.fail_times[1] += 1
-            return 1
+        if times < 3: self.fail_times[1] += 1
+
+        return to
     
     def get_time(self, obj):
         if obj.has_key("Date"):
