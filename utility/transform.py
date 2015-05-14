@@ -78,20 +78,25 @@ class Transformer:
     def write_all_rows(self, weights=None):
         self.fp.close()
         old_name = self.fp.name
-        csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=',')
-
-        # Final result writer
-        self.fp = io.open(self.name+".csv", 'w')
-        #self.csv_writer = csv.writer(self.fp, delimiter=',')
 
         if weights is not None:
+            csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=',')
+
+            # Final result writer
+            self.fp = io.open(self.name+".csv", 'w')
+            #self.csv_writer = csv.writer(self.fp, delimiter=',')
+
             for row in csv_reader:
                 for i in range(len(weights)):
                     row[i] = str(float(row[i]) * weights[i])
 
-            #self.csv_writer.writerow(row)
-            self.fp.write(unicode(",".join(row)+'\n'))
-        os.system("rm {0}".format(old_name))
+                #self.csv_writer.writerow(row)
+                self.fp.write(unicode(",".join(row)+'\n'))
+
+            os.system("rm {0}".format(old_name))
+
+        else:
+            os.system("mv {0} {1}".format(old_name, self.name+".csv"))
 
     def close(self):
         self.fp.close()
