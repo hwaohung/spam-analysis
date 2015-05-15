@@ -139,8 +139,8 @@ class Transformer:
     
     
     def get_link(self, obj):
-        if obj.has_key("Content"):
-            return obj["Content"].count("http://")
+        if obj.has_key("link_count"):
+            return len(obj["link_count"])
     
         else:
             self.fail_times[3] += 1
