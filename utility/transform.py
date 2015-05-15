@@ -68,7 +68,10 @@ class Transformer:
 
         for row in csv_reader:
             for i in range(len(row)):
-                row[i] = str(float(row[i]) / self.max_values[i])
+                if row[i] > 0:
+                    row[i] = str(float(row[i]) / self.max_values[i])
+                else:
+                    row[i] = "0.5"
 
             #self.csv_writer.writerow(row)
             self.fp.write(unicode(",".join(row)+'\n'))
@@ -107,7 +110,7 @@ class Transformer:
     
         else:
             self.fail_times[0] += 1
-            return 0
+            return -1
     
     def get_to(self, obj):
         times = 0
@@ -124,6 +127,7 @@ class Transformer:
             to += len(obj["BCC"])
     
         if times < 3: self.fail_times[1] += 1
+        if times == 0: return -1.0
 
         return to
     
@@ -135,8 +139,7 @@ class Transformer:
     
         else:
             self.fail_times[2] += 1
-            return 1200
-    
+            return -1.0
     
     def get_link(self, obj):
         if obj.has_key("link_count"):
@@ -144,7 +147,7 @@ class Transformer:
     
         else:
             self.fail_times[3] += 1
-            return 0
+            return -1.0
     
     def get_longitude(self, obj):
         if obj.has_key("geoip"):
@@ -153,4 +156,4 @@ class Transformer:
     
         else: 
             self.fail_times[4] += 1
-            return 180.0
+            return -1.0
