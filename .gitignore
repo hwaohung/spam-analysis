@@ -1,0 +1,6 @@
+*.db
+*.swp
+*.pyc
+*.csv
+*.DS_Store
+results/*
