@@ -5,7 +5,6 @@ class Transformer:
     def __init__(self, name="temp"):
         self.name = name
         self.fp = io.open(name+".temp", 'w', buffering=4096)
-        #self.csv_writer = csv.writer(self.fp, delimiter=',')
 
         self.row_count = 0
         self.max_values = [0, 0, 0, 0, 0]
@@ -53,18 +52,17 @@ class Transformer:
         self.row_count += 1
         vector = [str(e) for e in vector]
         #self.csv_writer.writerow(vector)
-        self.fp.write(unicode(",".join(vector)+'\n'))
+        self.fp.write(unicode(" ".join(vector)+'\n'))
 
     # Normal each axis value to same scale
     def normalize(self):
         # Close the writer
         self.fp.close()
         old_name = self.fp.name
-        csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=',')
+        csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=' ')
 
         # Normalize result writer
         self.fp = io.open(old_name+"_n", 'w')
-        #self.csv_writer = csv.writer(self.fp, delimiter=',')
 
         for row in csv_reader:
             for i in range(len(row)):
@@ -74,7 +72,7 @@ class Transformer:
                     row[i] = "0.5"
 
             #self.csv_writer.writerow(row)
-            self.fp.write(unicode(",".join(row)+'\n'))
+            self.fp.write(unicode(" ".join(row)+'\n'))
         os.system("rm {0}".format(old_name))
    
     # Write all attribute vectors, and also can re-weight some attributes(optional)
@@ -83,18 +81,17 @@ class Transformer:
         old_name = self.fp.name
 
         if weights is not None:
-            csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=',')
+            csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=' ')
 
             # Final result writer
             self.fp = io.open(self.name+".csv", 'w')
-            #self.csv_writer = csv.writer(self.fp, delimiter=',')
 
             for row in csv_reader:
                 for i in range(len(weights)):
                     row[i] = str(float(row[i]) * weights[i])
 
                 #self.csv_writer.writerow(row)
-                self.fp.write(unicode(",".join(row)+'\n'))
+                self.fp.write(unicode(" ".join(row)+'\n'))
 
             os.system("rm {0}".format(old_name))
 
