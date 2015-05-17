@@ -1,4 +1,11 @@
-# Bigdataanalytics: spam analysis
+# Bigdataanalytics
+
+<p align="center" >
+  <img src="https://github.com/hwaohung/spam-analysis/blob/master/Burrito.png?raw=true" alt="Burrito" title="Burrito">
+</p>
+
+
+## Assignment 1: spam analysis
 
 - 下載[SPAM ARCHIVE](http://untroubled.org/spam/)從2010~2015年的資料
 - 使用LogStash進行資料拋轉的工作
