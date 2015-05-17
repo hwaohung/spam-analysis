@@ -1,6 +1,4 @@
-# Bigdataanalytics
-
-## Assignment 1: spam analysis
+# Bigdataanalytics: spam analysis
 
 - 下載[SPAM ARCHIVE](http://untroubled.org/spam/)從2010~2015年的資料
 - 使用LogStash進行資料拋轉的工作
