@@ -42,15 +42,8 @@ class Transformer:
         # Whether has geography information
         vector.append(self.get_longitude(obj))
     
-        #print vector
-
-        # Keep the max value of each axis
-        for i in range(len(vector)):
-            if vector[i] > self.max_values[i]:
-                self.max_values[i] = vector[i]
-
         self.row_count += 1
-        vector = [str(e) for e in vector]
+        vector = (str(e) for e in vector)
         #self.csv_writer.writerow(vector)
         self.fp.write(unicode(" ".join(vector)+'\n'))
 
@@ -58,49 +51,44 @@ class Transformer:
     def normalize(self):
         # Close the writer
         self.fp.close()
+
         old_name = self.fp.name
-        csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=' ')
+        records = [list() for i in range(5)]
+        # Load all valid values of each feature
+        with io.open(old_name, 'r') as fp:
+            csv_reader = csv.reader(fp, delimiter=' ')
+            # All values list
+            for row in csv_reader:
+                for i in range(5):
+                    if row[i] >= 0.0: records[i].append(row[i])
 
-        # Normalize result writer
-        self.fp = io.open(old_name+"_n", 'w')
+        # Get the median, max value of each feature
+        medians = list()
+        maxs = list()
+        for i in range(5):
+            reocrds[i] = sorted(reocrds[i])
+            medians.append(records[i][len(records[i])/2])
+            maxs.append(reocrds[i][-1])
+            print "{0} => Median: {1}, Max: {2}".format(i, medians[i], maxs[i])
 
-        for row in csv_reader:
-            for i in range(len(row)):
-                if row[i] > 0:
-                    row[i] = str(float(row[i]) / self.max_values[i])
-                else:
-                    row[i] = "0.5"
+        del reocrds
 
-            #self.csv_writer.writerow(row)
-            self.fp.write(unicode(" ".join(row)+'\n'))
+        # Write out the final result
+        with io.open(self.name+".csv", 'w') as self.fp:
+            with io.open(old_name, 'r') as fp:
+                csv_reader = csv.reader(fp, delimiter=' ')
+                for row in csv_reader:
+                    for i in range(len(row)):
+                        if row[i] >= 0:
+                            # Normalized value
+                            row[i] = str(float(row[i]) / maxs[i])
+                        else:
+                            # Normalized median value for missing value
+                            row[i] = str(medians[i]/maxs[i])
+
+                    self.fp.write(unicode(" ".join(row)+'\n'))
         os.system("rm {0}".format(old_name))
    
-    # Write all attribute vectors, and also can re-weight some attributes(optional)
-    def write_all_rows(self, weights=None):
-        self.fp.close()
-        old_name = self.fp.name
-
-        if weights is not None:
-            csv_reader = csv.reader(io.open(old_name, 'r'), delimiter=' ')
-
-            # Final result writer
-            self.fp = io.open(self.name+".csv", 'w')
-
-            for row in csv_reader:
-                for i in range(len(weights)):
-                    row[i] = str(float(row[i]) * weights[i])
-
-                #self.csv_writer.writerow(row)
-                self.fp.write(unicode(" ".join(row)+'\n'))
-
-            os.system("rm {0}".format(old_name))
-
-        else:
-            os.system("mv {0} {1}".format(old_name, self.name+".csv"))
-
-    def close(self):
-        self.fp.close()
-
     def get_subject(self, obj):
         if obj.has_key("Subject"):
             return len(re.findall("[^a-zA-z0-9]", obj["Subject"]))

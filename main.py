@@ -20,7 +20,6 @@ def main():
             #print "============================================="
             
     transformer.normalize()
-    transformer.write_all_rows()
 
     print "Attribute convert complete!"
     print "Cost: {0}".format(time.time()-cost)
